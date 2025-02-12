@@ -11,11 +11,22 @@ mainClassName = 'dev.aisandbox.launcher.SandboxServerLauncher'
 
 def javaFXVersion = '21.0.5'
 
+ext {
+    isWin = System.properties['env'] == 'win'
+    isLinux = System.properties['env'] == 'linux'
+}
+
 gitVersioning.apply {
     refs {
         considerTagsOnBranches = true
         tag('v(?<version>.*)') {
-            version = '${ref.version}'
+            if (isWin) {
+                version = '${ref.version}-win'
+            } else if (isLinux) {
+                version = '${ref.version}-linux'
+            } else {
+                version = '${ref.version}'
+            }
         }
     }
     rev {
@@ -32,6 +43,12 @@ java {
 javafx {
     version = javaFXVersion
     modules = [ 'javafx.controls','javafx.fxml' ]
+    if (isWin) {
+        platform = 'win'
+    }
+    if (isLinux) {
+        platform = 'linux'
+    }
 }
 
 tasks.withType(JavaCompile) {
