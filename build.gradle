@@ -30,7 +30,13 @@ gitVersioning.apply {
         }
     }
     rev {
-        version = "SNAPSHOT"
+        if (isWin) {
+            version = 'SNAPSHOT-win'
+        } else if (isLinux) {
+            version = 'SNAPSHOT-linux'
+        } else {
+            version = "SNAPSHOT"
+        }
     }
 }
 
@@ -42,7 +48,7 @@ java {
 
 javafx {
     version = javaFXVersion
-    modules = [ 'javafx.controls','javafx.fxml' ]
+    modules = ['javafx.controls', 'javafx.fxml']
     if (isWin) {
         platform = 'win'
     }
