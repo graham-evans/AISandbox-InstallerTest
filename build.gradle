@@ -1,0 +1,68 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id("io.freefair.lombok") version "8.12.1"
+    id 'me.qoomon.git-versioning' version '6.4.4'
+
+}
+
+group = 'dev.aisandbox'
+mainClassName = 'dev.aisandbox.launcher.SandboxServerLauncher'
+
+def javaFXVersion = '21.0.5'
+
+gitVersioning.apply {
+    refs {
+        considerTagsOnBranches = true
+        tag('v(?<version>.*)') {
+            version = '${ref.version}'
+        }
+    }
+    rev {
+        version = "SNAPSHOT"
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+javafx {
+    version = javaFXVersion
+    modules = [ 'javafx.controls','javafx.fxml' ]
+}
+
+tasks.withType(JavaCompile) {
+    options.deprecation = true
+    options.compilerArgs << '-Xlint:unchecked'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // logging
+    implementation 'ch.qos.logback:logback-core:1.5.6'
+    testImplementation 'org.slf4j:slf4j-api:2.1.0-alpha1'
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
+    // test libs
+    testImplementation(platform('org.junit:junit-bom:5.11.4'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    testRuntimeOnly('org.junit.platform:junit-platform-launcher')
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
