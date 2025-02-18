@@ -5,9 +5,12 @@ plugins {
 }
 
 group = 'dev.aisandbox'
-mainClassName = 'dev.aisandbox.launcher.SandboxServerLauncher'
+
 
 application {
+
+    mainClassName = 'dev.aisandbox.launcher.SandboxServerLauncher'
+
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(21)
@@ -24,7 +27,7 @@ javafx {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.deprecation = true
     options.compilerArgs << '-Xlint:unchecked'
 }
