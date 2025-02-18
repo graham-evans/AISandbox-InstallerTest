@@ -2,58 +2,25 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
     id("io.freefair.lombok") version "8.12.1"
-//    id 'me.qoomon.git-versioning' version '6.4.4'
-
 }
 
 group = 'dev.aisandbox'
 mainClassName = 'dev.aisandbox.launcher.SandboxServerLauncher'
 
-def javaFXVersion = '21.0.5'
-
-ext {
-    isWin = System.properties['env'] == 'win'
-    isLinux = System.properties['env'] == 'linux'
-}
-
-/*gitVersioning.apply {
-    refs {
-        considerTagsOnBranches = true
-        tag('v(?<version>.*)') {
-            if (isWin) {
-                version = '${ref.version}-win'
-            } else if (isLinux) {
-                version = '${ref.version}-linux'
-            } else {
-                version = '${ref.version}'
-            }
+application {
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
         }
     }
-    rev {
-        if (isWin) {
-            version = 'SNAPSHOT-win'
-        } else if (isLinux) {
-            version = 'SNAPSHOT-linux'
-        } else {
-            version = "SNAPSHOT"
-        }
-    }
-} */
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
 }
+
 
 javafx {
-    version = javaFXVersion
+    version = '21.0.5'
     modules = ['javafx.controls', 'javafx.fxml']
-    if (isWin) {
-        platform = 'win'
-    }
-    if (isLinux) {
-        platform = 'linux'
+    if (System.properties.containsKey('env')) {
+        platform = System.properties['env']
     }
 }
 
