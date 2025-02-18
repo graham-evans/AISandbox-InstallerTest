@@ -9,7 +9,7 @@ group = 'dev.aisandbox'
 
 application {
 
-    mainClassName = 'dev.aisandbox.launcher.SandboxServerLauncher'
+    mainClass = 'dev.aisandbox.launcher.SandboxServerLauncher'
 
     java {
         toolchain {
